@@ -3,7 +3,7 @@ import {assert} from 'chai'
 import {APIClient, FetchProvider} from '@wharfkit/antelope'
 import {mockFetch} from '@wharfkit/mock-data'
 
-import {HyperionAPIClient} from '$lib' // Replace with the actual import
+import {HyperionAPIClient, Types} from '$lib'
 
 const ABIResponse = {
   // Add mock data that mimics the actual ABI snapshot structure
@@ -30,4 +30,12 @@ suite('Hyperion API', function () {
             "query_time_ms": 4,
         });
     })
+
+    test('get_voters', async function () {
+        const response = await hyperion.get_voters('eoscafeblock', true, 100, 200);
+        assert.equal(response.voters.length, 24);
+        assert(response.voters[0].account.equals('killc.ftw'));
+        assert(response.voters[0].weight.equals(20161076275.827435));
+        assert(response.voters[0].last_vote.equals(297527904));
+    });
 })
