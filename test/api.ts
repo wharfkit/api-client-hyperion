@@ -3,22 +3,31 @@ import {assert} from 'chai'
 import {APIClient, FetchProvider} from '@wharfkit/antelope'
 import {mockFetch} from '@wharfkit/mock-data'
 
-import {ExampleAPI} from '$lib'
+import {HyperionAPIClient} from '$lib' // Replace with the actual import
 
-// Setup an APIClient
+const ABIResponse = {
+  // Add mock data that mimics the actual ABI snapshot structure
+};
+
 const client = new APIClient({
-    provider: new FetchProvider('https://jungle4.greymass.com', {fetch: mockFetch}),
+    provider: new FetchProvider('https://eos.hyperion.eosrio.io/', {fetch: mockFetch}),
 })
 
-// Setup the API
-const example = new ExampleAPI(client)
+const hyperion = new HyperionAPIClient(client)
 
-suite('api', function () {
+suite('Hyperion API', function () {
     this.slow(200)
     this.timeout(10 * 10000)
 
-    test('call test api', async function () {
-        const res = await example.get_info()
-        assert.equal(res.server_version, '905c5cc9')
+    test('get_abi_snapshot', async function () {
+        const response = await hyperion.get_abi_snapshot("eosio.token", 2000, true);
+        assert.deepEqual(response, {
+            "block_num": null,
+            "error": "abi not found for eosio.token until block 2000",
+            "last_indexed_block": 331963268,
+            "last_indexed_block_time": "2023-09-20T00:35:04.500",
+            "present": false,
+            "query_time_ms": 4,
+        });
     })
 })

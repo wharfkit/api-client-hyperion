@@ -1,24 +1,20 @@
-import {API, APIClient} from '@wharfkit/antelope'
+import {ABI, APIClient} from '@wharfkit/antelope'
 
-export class ExampleAPI {
+export class HyperionAPIClient {
     constructor(private client: APIClient) {}
 
-    /**
-     * Define the calls for the API
-     */
-    // async get_raw_abi(accountName: NameType) {
-    //     return this.call({
-    //         path: '/v1/chain/get_raw_abi',
-    //         params: {account_name: Name.from(accountName)},
-    //         responseType: GetRawAbiResponse,
-    //     })
-    // }
+    async get_abi_snapshot(contract: string, block?: number, fetch = false): Promise<ABI.Def> {
+        if (!block) {
+            const info = await this.client.v1.chain.get_info()
 
-    // Example for testing
-    async get_info() {
-        return this.client.call({
-            path: '/v1/chain/get_info',
-            responseType: API.v1.GetInfoResponse,
+            block = Number(info.last_irreversible_block_num)
+        }
+
+        return this.client.call<ABI.Def>({
+            path: `/v2/history/get_abi_snapshot?contract=${encodeURIComponent(
+                contract
+            )}&block=${block}&fetch=${fetch}`,
+            method: 'GET',
         })
     }
 }

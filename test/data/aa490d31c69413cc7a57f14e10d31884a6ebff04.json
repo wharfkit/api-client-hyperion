@@ -1,0 +1,18 @@
+{
+    "request": {
+        "path": "https://eos.hyperion.eosrio.io/v2/history/get_abi_snapshot?contract=eosio.token&block=2000&fetch=true",
+        "params": {
+            "method": "GET"
+        }
+    },
+    "status": 200,
+    "json": {
+        "block_num": null,
+        "present": false,
+        "error": "abi not found for eosio.token until block 2000",
+        "query_time_ms": 4,
+        "last_indexed_block": 331963268,
+        "last_indexed_block_time": "2023-09-20T00:35:04.500"
+    },
+    "text": "{\"block_num\":null,\"present\":false,\"error\":\"abi not found for eosio.token until block 2000\",\"query_time_ms\":4,\"last_indexed_block\":331963268,\"last_indexed_block_time\":\"2023-09-20T00:35:04.500\"}"
+}
