@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 
-import {APIClient, FetchProvider, Name, UInt64} from '@wharfkit/antelope'
+import {APIClient, Checksum256, FetchProvider, Float64, Name, UInt64} from '@wharfkit/antelope'
 import {mockFetch} from '@wharfkit/mock-data'
 
 import {HyperionAPIClient} from '$lib'
@@ -100,5 +100,21 @@ suite('Hyperion API', function () {
         assert.equal(response.account_names.length, 1);
         assert.instanceOf(response.account_names[0], Name);
         assert.equal(String(response.account_names[0]), "teamgreymass");
+    })
+
+    test('get_tokens', async function () {
+        const response = await hyperion.get_tokens("teamgreymass");
+
+        assert.instanceOf(response.account, Name);
+        assert.equal(response.tokens.length, 2);
+        assert.instanceOf(response.tokens[0].amount, Float64);
+    })
+
+    test('get_transaction', async function () {
+        const response = await hyperion.get_transaction("a51a3cc53b2ff5d5b25ad44b1e3ef5f796ce3ca60101ea05b3be64e68b684ccb");
+
+        assert.instanceOf(response.trx_id, Checksum256);
+        assert.equal(response.actions.length, 5);
+        assert.instanceOf(response.actions[0].act.name, Name);
     })
 })

@@ -158,3 +158,28 @@ export class GetTableStateResponse extends Struct {
 export class GetKeyAccountsResponse extends Struct {
     @Struct.field(Name, { array: true }) declare account_names: Name[];
 }
+
+@Struct.type('token_info')
+export class TokenInfo extends Struct {
+    @Struct.field('string') declare symbol: string;
+    @Struct.field(Float64) declare amount: Float64;
+    @Struct.field('string') declare contract: 'string';
+    @Struct.field(UInt32, { optional: true }) declare precision?: UInt32;
+    @Struct.field('string', { optional: true }) declare error?: string;
+}
+@Struct.type('get_tokens_response')
+export class GetTokensResponse extends Struct {
+    @Struct.field(Name) declare account: Name;
+    @Struct.field(Float64) declare query_time_ms: Float64;
+    @Struct.field(TokenInfo, { array: true }) declare tokens: TokenInfo[];
+}
+
+@Struct.type('get_transaction_response')
+export class GetTransactionResponse extends Struct {
+    @Struct.field(Float64) declare query_time_ms: Float64;
+    @Struct.field('bool') declare executed: boolean;
+    @Struct.field(Checksum256) declare trx_id: Checksum256;
+    @Struct.field(UInt32) declare lib: UInt32;
+    @Struct.field('bool') declare cached_lib: boolean;
+    @Struct.field(Action, { array: true }) declare actions: Action[];
+}

@@ -1,5 +1,5 @@
-import {APIClient, Asset, Int64Type, NameType, UInt64Type} from '@wharfkit/antelope'
-import {GetABISnapshotResponse, GetActionsResponse, GetCreatedAccountsResponse, GetCreatorResponse, GetDeltasResponse, GetKeyAccountsResponse, GetLinksResponse, GetProposalsResponse, GetTableStateResponse, GetVotersResponse} from './types'
+import {APIClient, Asset, Checksum256Type, Int64Type, Name, NameType, PublicKeyType, UInt64Type} from '@wharfkit/antelope'
+import {GetABISnapshotResponse, GetActionsResponse, GetCreatedAccountsResponse, GetCreatorResponse, GetDeltasResponse, GetKeyAccountsResponse, GetLinksResponse, GetProposalsResponse, GetTableStateResponse, GetTokensResponse, GetTransactionResponse, GetVotersResponse} from './types'
 
 export class HyperionAPIClient {
     constructor(private client: APIClient) {}
@@ -138,11 +138,27 @@ export class HyperionAPIClient {
         });
     }
 
-    async get_key_accounts(public_key: string): Promise<GetKeyAccountsResponse> {
+    async get_key_accounts(public_key: PublicKeyType): Promise<GetKeyAccountsResponse> {
         return this.client.call({
             path: `/v2/state/get_key_accounts?public_key=${public_key}`,
             method: 'GET',
             responseType: GetKeyAccountsResponse,
+        });
+    }
+
+    async get_tokens(account: NameType): Promise<GetTokensResponse> {
+        return this.client.call({
+            path: `/v2/state/get_tokens?account=${account}`,
+            method: 'GET',
+            responseType: GetTokensResponse,
+        });
+    }
+
+    async get_transaction(id: Checksum256Type): Promise<GetTransactionResponse> {
+        return this.client.call({
+            path: `/v2/history/get_transaction?id=${id}`,
+            method: 'GET',
+            responseType: GetTransactionResponse,
         });
     }
 }
