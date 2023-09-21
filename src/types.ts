@@ -98,3 +98,26 @@ export class GetActionsResponse extends Struct {
     @Struct.field(TotalCount) declare total: TotalCount;
     @Struct.field(Action, { array: true }) declare actions: Action[]; 
 }
+
+@Struct.type('account_info')
+export class AccountInfo extends Struct {
+    @Struct.field(Name) declare name: Name;
+    @Struct.field(Checksum256) declare trx_id: Checksum256;
+    @Struct.field(TimePoint) declare timestamp: TimePoint;
+}
+
+@Struct.type('get_created_accounts_response')
+export class GetCreatedAccountsResponse extends Struct {
+    @Struct.field(Float64) declare query_time_ms: Float64;
+    @Struct.field(AccountInfo, { array: true }) declare accounts: AccountInfo[];
+}
+
+@Struct.type('get_creator_response')
+export class GetCreatorResponse extends Struct {
+    @Struct.field(Float64) declare query_time_ms: Float64;
+    @Struct.field(Name) declare account: Name;
+    @Struct.field(Name) declare creator: Name;
+    @Struct.field(BlockTimestamp) declare timestamp: BlockTimestamp;
+    @Struct.field(UInt32) declare block_num: UInt32;
+    @Struct.field(Checksum256) declare trx_id: Checksum256;
+}

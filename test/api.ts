@@ -64,4 +64,20 @@ suite('Hyperion API', function () {
         assert.instanceOf(response.actions[0].act.name, Name);
         assert.instanceOf(response.actions[0].act.authorization[0].actor, Name);
     });
+
+    test('get_created_accounts', async function () {
+        const response = await hyperion.get_created_accounts("teamgreymass");
+
+        assert.isArray(response.accounts);
+        assert.equal(response.accounts.length, 4);
+        assert.instanceOf(response.accounts[0].name, Name);
+    })
+
+    test('get_creator', async function () {
+        const response = await hyperion.get_creator("teamgreymass");
+
+        assert.instanceOf(response.creator, Name);
+        assert.equal(String(response.creator), "gqyqi.waa");
+    })
+    
 })

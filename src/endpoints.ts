@@ -1,5 +1,5 @@
 import {APIClient, NameType} from '@wharfkit/antelope'
-import {GetABISnapshotResponse, GetActionsResponse, GetLinksResponse, GetProposalsResponse, GetVotersResponse} from './types'
+import {GetABISnapshotResponse, GetActionsResponse, GetCreatedAccountsResponse, GetCreatorResponse, GetLinksResponse, GetProposalsResponse, GetVotersResponse} from './types'
 
 export class HyperionAPIClient {
     constructor(private client: APIClient) {}
@@ -103,6 +103,22 @@ export class HyperionAPIClient {
             path: `/v2/history/get_actions${queryParams}`,
             method: 'GET',
             responseType: GetActionsResponse,
+        });
+    }
+
+    async get_created_accounts(account: string): Promise<GetCreatedAccountsResponse> {
+        return this.client.call({
+            path: `/v2/history/get_created_accounts?account=${account}`,
+            method: 'GET',
+            responseType: GetCreatedAccountsResponse,
+        });
+    }
+
+    async get_creator(account: string): Promise<GetCreatorResponse> {
+        return this.client.call({
+            path: `/v2/history/get_creator?account=${account}`,
+            method: 'GET',
+            responseType: GetCreatorResponse,
         });
     }
 }
