@@ -1,5 +1,5 @@
-import {APIClient, NameType} from '@wharfkit/antelope'
-import {GetABISnapshotResponse, GetActionsResponse, GetCreatedAccountsResponse, GetCreatorResponse, GetLinksResponse, GetProposalsResponse, GetVotersResponse} from './types'
+import {APIClient, Asset, Int64Type, NameType, UInt64Type} from '@wharfkit/antelope'
+import {GetABISnapshotResponse, GetActionsResponse, GetCreatedAccountsResponse, GetCreatorResponse, GetDeltasResponse, GetKeyAccountsResponse, GetLinksResponse, GetProposalsResponse, GetTableStateResponse, GetVotersResponse} from './types'
 
 export class HyperionAPIClient {
     constructor(private client: APIClient) {}
@@ -78,18 +78,18 @@ export class HyperionAPIClient {
         });
     }
 
-    async get_actions(account: string, options?: {
+    async get_actions(account: NameType, options?: {
         filter?: string,
         skip?: number,
         limit?: number,
         sort?: string,
         after?: string,
         before?: string,
-        transfer_to?: string,
-        transfer_from?: string,
-        transfer_symbol?: string,
+        transfer_to?: NameType,
+        transfer_from?: NameType,
+        transfer_symbol?: Asset.Symbol,
         act_name?: string,
-        act_account?: string
+        act_account?: NameType
     }): Promise<GetActionsResponse> {
         const queryParts: string[] = [`account=${account}`];
     
@@ -106,7 +106,7 @@ export class HyperionAPIClient {
         });
     }
 
-    async get_created_accounts(account: string): Promise<GetCreatedAccountsResponse> {
+    async get_created_accounts(account: NameType): Promise<GetCreatedAccountsResponse> {
         return this.client.call({
             path: `/v2/history/get_created_accounts?account=${account}`,
             method: 'GET',
@@ -114,11 +114,35 @@ export class HyperionAPIClient {
         });
     }
 
-    async get_creator(account: string): Promise<GetCreatorResponse> {
+    async get_creator(account: NameType): Promise<GetCreatorResponse> {
         return this.client.call({
             path: `/v2/history/get_creator?account=${account}`,
             method: 'GET',
             responseType: GetCreatorResponse,
+        });
+    }
+
+    async get_deltas(code: NameType, scope: NameType, table: NameType, payer: NameType): Promise<GetDeltasResponse> {
+        return this.client.call({
+            path: `/v2/history/get_deltas?code=${code}&scope=${scope}&table=${table}&payer=${payer}`,
+            method: 'GET',
+            responseType: GetDeltasResponse,
+        });
+    }
+
+    async get_table_state(code: NameType, table: NameType, block_num: Int64Type, after_key = ''): Promise<GetTableStateResponse> {
+        return this.client.call({
+            path: `/v2/history/get_table_state?code=${code}&table=${table}&block_num=${block_num}&after_key=${after_key}`,
+            method: 'GET',
+            responseType: GetTableStateResponse,
+        });
+    }
+
+    async get_key_accounts(public_key: string): Promise<GetKeyAccountsResponse> {
+        return this.client.call({
+            path: `/v2/state/get_key_accounts?public_key=${public_key}`,
+            method: 'GET',
+            responseType: GetKeyAccountsResponse,
         });
     }
 }

@@ -1,4 +1,4 @@
-import {ABI, Authority, BlockTimestamp, Checksum256, Float64, Name, PermissionLevel, PermissionLevelType, Struct, TimePoint, UInt32, UInt64} from '@wharfkit/antelope'
+import {ABI, BlockTimestamp, Checksum256, Float64, Name, PermissionLevel, Struct, TimePoint, UInt32, UInt64, UInt8, Variant} from '@wharfkit/antelope'
 
 @Struct.type('get_abi_snapshot_response')
 export class GetABISnapshotResponse extends Struct {
@@ -120,4 +120,41 @@ export class GetCreatorResponse extends Struct {
     @Struct.field(BlockTimestamp) declare timestamp: BlockTimestamp;
     @Struct.field(UInt32) declare block_num: UInt32;
     @Struct.field(Checksum256) declare trx_id: Checksum256;
+}
+
+@Struct.type('delta')
+export class Delta extends Struct {
+    @Struct.field(BlockTimestamp) declare timestamp: BlockTimestamp;
+    @Struct.field(UInt8) declare present: UInt8;
+    @Struct.field(Name) declare code: Name;
+    @Struct.field(Name) declare scope: Name;
+    @Struct.field(Name) declare table: Name;
+    @Struct.field(Name) declare primary_key: Name;
+    @Struct.field(Name) declare payer: Name;
+    @Struct.field(UInt64) declare block_num: UInt64;
+    @Struct.field(Checksum256) declare block_id: Checksum256;
+    @Struct.field('any') declare data: any;
+}
+
+@Struct.type('get_deltas_response')
+export class GetDeltasResponse extends Struct {
+    @Struct.field(Float64) declare query_time_ms: Float64;
+    @Struct.field(TotalCount) declare total: TotalCount;
+    @Struct.field(Delta, { array: true }) declare deltas: Delta[];
+}
+
+@Struct.type('get_table_state_response')
+export class GetTableStateResponse extends Struct {
+    @Struct.field(Float64) declare query_time_ms: Float64;
+    @Struct.field(Name) declare code: Name;
+    @Struct.field(Name) declare table: Name;
+    @Struct.field(UInt64) declare block_num: UInt64;
+    @Struct.field('string') declare after_key: string;
+    @Struct.field('string') declare next_key: string;
+    @Struct.field('any', { array: true }) declare results: any[];
+}
+
+@Struct.type('get_key_accounts_response')
+export class GetKeyAccountsResponse extends Struct {
+    @Struct.field(Name, { array: true }) declare account_names: Name[];
 }

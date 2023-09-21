@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 
-import {APIClient, FetchProvider, Name} from '@wharfkit/antelope'
+import {APIClient, FetchProvider, Name, UInt64} from '@wharfkit/antelope'
 import {mockFetch} from '@wharfkit/mock-data'
 
 import {HyperionAPIClient} from '$lib'
@@ -79,5 +79,26 @@ suite('Hyperion API', function () {
         assert.instanceOf(response.creator, Name);
         assert.equal(String(response.creator), "gqyqi.waa");
     })
-    
+
+    test('get_deltas', async function () {
+        const response = await hyperion.get_deltas("eosio.token", "teamgreymass", "accounts", "teamgreymass");
+
+        assert.equal(response.deltas.length, 10);
+        assert.instanceOf(response.deltas[0].code, Name);
+    })
+
+    test('get_table_state', async function () {
+        const response = await hyperion.get_table_state("eosio.token", "stat", 267000000);
+
+        assert.instanceOf(response.code, Name);
+        assert.equal(response.results.length, 1);
+    })
+
+    test('get_key_accounts', async function () {
+        const response = await hyperion.get_key_accounts("EOS8KmhygTrrvtW7zJd6HXWrNqA5WX9NzScZ37JyXRiwpiJN2g2rR");
+        
+        assert.equal(response.account_names.length, 1);
+        assert.instanceOf(response.account_names[0], Name);
+        assert.equal(String(response.account_names[0]), "teamgreymass");
+    })
 })
