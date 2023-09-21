@@ -1,16 +1,16 @@
 import {assert} from 'chai'
 
-import {APIClient, FetchProvider} from '@wharfkit/antelope'
+import {APIClient, FetchProvider, Name} from '@wharfkit/antelope'
 import {mockFetch} from '@wharfkit/mock-data'
 
-import {HyperionAPIClient, Types} from '$lib'
+import {HyperionAPIClient} from '$lib'
 
 const ABIResponse = {
   // Add mock data that mimics the actual ABI snapshot structure
 };
 
 const client = new APIClient({
-    provider: new FetchProvider('https://eos.hyperion.eosrio.io/', {fetch: mockFetch}),
+    provider: new FetchProvider('https://wax.blokcrafters.io/', {fetch: mockFetch}),
 })
 
 const hyperion = new HyperionAPIClient(client)
@@ -21,21 +21,47 @@ suite('Hyperion API', function () {
 
     test('get_abi_snapshot', async function () {
         const response = await hyperion.get_abi_snapshot("eosio.token", 2000, true);
-        assert.deepEqual(response, {
-            "block_num": null,
-            "error": "abi not found for eosio.token until block 2000",
-            "last_indexed_block": 331963268,
-            "last_indexed_block_time": "2023-09-20T00:35:04.500",
-            "present": false,
-            "query_time_ms": 4,
-        });
+        assert.equal(response.abi.version, "eosio::abi/1.1")
     })
 
     test('get_voters', async function () {
-        const response = await hyperion.get_voters('eoscafeblock', true, 100, 200);
-        assert.equal(response.voters.length, 24);
-        assert(response.voters[0].account.equals('killc.ftw'));
-        assert(response.voters[0].weight.equals(20161076275.827435));
-        assert(response.voters[0].last_vote.equals(297527904));
+        const response = await hyperion.get_voters('teamgreymass', true, 100, 200);
+        assert.equal(response.voters.length, 100);
+        assert.instanceOf(response.voters[0].account, Name);
+        assert.equal(String(response.voters[0].account), 'j3.rq.wam');
+        assert.equal(Number(response.voters[0].weight), 1.5044807131168136e+39);
+        assert.equal(Number(response.voters[0].last_vote), 266448316);
+    });
+
+    test('get_links', async function () {
+        const response = await hyperion.get_links('teamgreymass');
+        assert.isArray(response.links);
+        assert.equal(response.links.length, 10);
+        assert.instanceOf(response.links[0].account, Name);
+    });
+
+    test('get_proposals', async function () {
+        const response = await hyperion.get_proposals({
+            skip: 1,
+            limit: 10
+        });
+
+        assert.isArray(response.proposals);
+        assert.equal(response.proposals.length, 10);
+        assert.instanceOf(response.proposals[0].proposer, Name);
+    })
+
+    test('get_actions', async function () {
+        const response = await hyperion.get_actions("teamgreymass", {
+            filter: "eosio.token:*",
+            skip: 100,
+            limit: 5
+        });
+
+    
+        assert.isArray(response.actions);
+        assert.equal(response.actions.length, 5);
+        assert.instanceOf(response.actions[0].act.name, Name);
+        assert.instanceOf(response.actions[0].act.authorization[0].actor, Name);
     });
 })
