@@ -1,4 +1,4 @@
-import { APIClient, Asset, Checksum256Type, Int64Type, NameType, PublicKeyType } from "@wharfkit/antelope"
+import { APIClient, Asset, Checksum256Type, Int64Type, NameType, PublicKeyType, TimePointType, UInt64Type } from "@wharfkit/antelope"
 import { V2 } from "../types"
 
 export class HyperionV2APIClient {
@@ -207,5 +207,23 @@ export class HyperionV2HistoryAPIClient {
             method: 'GET',
             responseType: V2.GetTransactionResponse,
         })
+    }
+
+    async get_transfers(params: {
+        from?: NameType;
+        to?: NameType;
+        symbol?: NameType;
+        contract?: NameType;
+        skip?: UInt64Type;
+        limit?: UInt64Type;
+        after?: TimePointType;
+        before?: TimePointType;
+    }): Promise<any> {
+        const queryParams = new URLSearchParams(params as any).toString();
+        return this.client.call({
+            path: `/v2/history/get_transfers?${queryParams}`,
+            method: 'GET',
+            // responseType: V2.GetTransfersResponse,
+        });
     }
 }
