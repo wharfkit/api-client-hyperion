@@ -15,28 +15,6 @@ suite('Hyperion API', function () {
     this.slow(200)
     this.timeout(10 * 10000)
 
-    // suite('v1', function () {
-    //     test('get_actions', async function () {
-    //         const response = await hyperion.v1.get_actions({
-    //             account_name: "teamgreymass",
-    //             pos: 100,
-    //             offset: 5,
-    //             filter: 1,
-    //             sort: "asc",
-    //             after: 100,
-    //             before: 200,
-    //             parent: 1
-    //         });
-
-    //         console.log({ json: JSON.stringify(response) })
-
-    //         assert.isArray(response.actions);
-    //         assert.equal(response.actions.length, 5);
-    //         assert.instanceOf(response.actions[0].act.name, Name);
-    //         assert.instanceOf(response.actions[0].act.authorization[0].actor, Name);
-    //     })
-    // })
-
     suite('v2', function () {
         test('get_health', async function () {
             const response = await hyperion.v2.get_health();

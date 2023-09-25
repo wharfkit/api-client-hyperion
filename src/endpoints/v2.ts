@@ -1,13 +1,20 @@
-import { APIClient, Asset, Checksum256Type, Int64Type, NameType, PublicKeyType, TimePointType, UInt64Type } from "@wharfkit/antelope"
-import { V2 } from "../types"
+import {
+    APIClient,
+    Asset,
+    Checksum256Type,
+    Int64Type,
+    NameType,
+    PublicKeyType,
+} from '@wharfkit/antelope'
+import {V2} from '../types'
 
 export class HyperionV2APIClient {
-    public state: HyperionV2StateAPIClient;
-    public history: HyperionV2HistoryAPIClient;
+    public state: HyperionV2StateAPIClient
+    public history: HyperionV2HistoryAPIClient
 
     constructor(private client: APIClient) {
-        this.state = new HyperionV2StateAPIClient(client);
-        this.history = new HyperionV2HistoryAPIClient(client);
+        this.state = new HyperionV2StateAPIClient(client)
+        this.history = new HyperionV2HistoryAPIClient(client)
     }
 
     get_health(): Promise<V2.GetHealthResponse> {
@@ -210,10 +217,10 @@ export class HyperionV2HistoryAPIClient {
     }
 
     async get_transfers(): Promise<any> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.')
     }
 
     async get_transacted_accounts(): Promise<any> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.')
     }
 }
