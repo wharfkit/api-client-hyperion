@@ -15,9 +15,7 @@ import {
 
 export type SortType = 'desc' | 'asc' | '1' | '-1';
 
-export namespace V1 {
-
-}
+export namespace V1 {}
 
 export namespace V2 {
     @Struct.type('get_abi_snapshot_response')
@@ -225,7 +223,7 @@ export namespace V2 {
     export class HealthEntry extends Struct {
         @Struct.field('string') declare service: string;
         @Struct.field('string') declare status: string;
-        @Struct.field('map') declare service_data?: NodeosRPCServiceData | ElasticsearchServiceData;
+        @Struct.field('any', { optional: true }) declare service_data?: NodeosRPCServiceData | ElasticsearchServiceData;
         @Struct.field(UInt64) declare time: UInt64;
     }
 

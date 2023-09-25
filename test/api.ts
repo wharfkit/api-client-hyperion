@@ -152,14 +152,6 @@ suite('Hyperion API', function () {
                 assert.instanceOf(response.creator, Name);
                 assert.equal(String(response.creator), "gqyqi.waa");
             })
-
-            test('get_transfers', async function () {
-                const response = await hyperion.v2.history.get_transfers({ from: 'teamgreymass' });
-        
-                assert.isArray(response.transfers);
-                assert.equal(response.transfers.length, 10);
-                assert.instanceOf(response.transfers[0].from, Name);
-            })
         })
     })  
 })

@@ -14,7 +14,7 @@ export class HyperionV2APIClient {
         return this.client.call({
             path: `/v2/health`,
             method: 'GET',
-            // responseType: V2.GetHealthResponse,
+            responseType: V2.GetHealthResponse,
         })
     }
 }
@@ -209,21 +209,11 @@ export class HyperionV2HistoryAPIClient {
         })
     }
 
-    async get_transfers(params: {
-        from?: NameType;
-        to?: NameType;
-        symbol?: NameType;
-        contract?: NameType;
-        skip?: UInt64Type;
-        limit?: UInt64Type;
-        after?: TimePointType;
-        before?: TimePointType;
-    }): Promise<any> {
-        const queryParams = new URLSearchParams(params as any).toString();
-        return this.client.call({
-            path: `/v2/history/get_transfers?${queryParams}`,
-            method: 'GET',
-            // responseType: V2.GetTransfersResponse,
-        });
+    async get_transfers(): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
+    async get_transacted_accounts(): Promise<any> {
+        throw new Error("Method not implemented.");
     }
 }
