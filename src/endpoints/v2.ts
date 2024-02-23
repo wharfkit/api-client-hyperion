@@ -166,9 +166,23 @@ export class HyperionV2HistoryAPIClient {
         })
     }
 
-    async get_created_accounts(account: NameType): Promise<Types.V2.GetCreatedAccountsResponse> {
+    async get_created_accounts(
+        account: NameType,
+        options?: {
+            skip?: number
+            limit?: number
+        }
+    ): Promise<Types.V2.GetCreatedAccountsResponse> {
+        const queryParts: string[] = [`account=${account}`]
+
+        for (const [key, value] of Object.entries(options || {})) {
+            queryParts.push(`${key}=${value}`)
+        }
+
+        const queryParams = queryParts.length ? '?' + queryParts.join('&') : ''
+
         return this.client.call({
-            path: `/v2/history/get_created_accounts?account=${account}`,
+            path: `/v2/history/get_created_accounts${queryParams}`,
             method: 'GET',
             responseType: Types.V2.GetCreatedAccountsResponse,
         })

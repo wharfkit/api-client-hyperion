@@ -160,6 +160,29 @@ suite('Hyperion API', function () {
                 assert.instanceOf(response.accounts[0].name, Name)
             })
 
+            test('get_created_accounts (limit & skip)', async function () {
+                const response = await hyperion.v2.history.get_created_accounts('gm', {
+                    limit: 1,
+                })
+
+                assert.instanceOf(response, Types.V2.GetCreatedAccountsResponse)
+                assert.isArray(response.accounts)
+                assert.equal(response.accounts.length, 1)
+                assert.instanceOf(response.accounts[0].name, Name)
+
+                const firstName = response.accounts[0].name
+                const response2 = await hyperion.v2.history.get_created_accounts('gm', {
+                    limit: 1,
+                    skip: 1,
+                })
+
+                assert.instanceOf(response2, Types.V2.GetCreatedAccountsResponse)
+                assert.isArray(response2.accounts)
+                assert.equal(response2.accounts.length, 1)
+                assert.instanceOf(response2.accounts[0].name, Name)
+                assert.notEqual(response2.accounts[0].name, firstName)
+            })
+
             test('get_creator', async function () {
                 const response = await hyperion.v2.history.get_creator('teamgreymass')
 
