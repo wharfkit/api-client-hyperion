@@ -1,6 +1,14 @@
 import {assert} from 'chai'
 
-import {APIClient, Checksum256, FetchProvider, Float64, Name} from '@wharfkit/antelope'
+import {
+    APIClient,
+    Checksum256,
+    FetchProvider,
+    Float64,
+    Name,
+    Serializer,
+    UInt64,
+} from '@wharfkit/antelope'
 import {mockFetch} from '@wharfkit/mock-data'
 
 import {HyperionAPIClient, Types} from '$lib'
@@ -113,6 +121,11 @@ suite('Hyperion API', function () {
                 assert.equal(response.actions.length, 5)
                 assert.instanceOf(response.actions[0].act.name, Name)
                 assert.instanceOf(response.actions[0].act.authorization[0].actor, Name)
+                assert.isArray(response.actions[0].receipts)
+                assert.instanceOf(response.actions[0].global_sequence, UInt64)
+                assert.instanceOf(response.actions[0].producer, Name)
+                assert.instanceOf(response.actions[0].action_ordinal, UInt64)
+                assert.instanceOf(response.actions[0].creator_action_ordinal, UInt64)
             })
 
             test('get_transaction', async function () {
